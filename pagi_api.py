@@ -20,7 +20,6 @@ import sys
 import random
 import select
 import threading
-import thread
 import json
 
 # a variable that controls how long to wait (in seconds) for sensor data from unity
@@ -144,7 +143,7 @@ class Body:
 class Hand:
     def __init__(self, handStr, socket):
         if handStr != "R" and handStr != "L":
-            print "ERROR: invalid handStr value. Expected 'R' or 'L', instead found", handStr
+            print("ERROR: invalid handStr value. Expected 'R' or 'L', instead found", handStr)
             return
         self.hand = handStr
         self.closed = False
@@ -234,7 +233,7 @@ class Hand:
         number = json_data["content"].split(',')[1]
         if number == "1" :
             self.closed = True
-        print response
+        print(response)
 
         s = toJson("sensorRequest", self.hand + '2', 0.0, 0.0, 0.0, "", 0, "", 0)
         send(s, self.clientsocket)
@@ -322,7 +321,7 @@ class Vision:
             visionOutput = json_data["content"]
             visionList = visionOutput.split(",")
         else:
-            print "Error: No detailed sensor map data retrieved!"
+            print("Error: No detailed sensor map data retrieved!")
             return None
 
         # store contents of sensor reading (update self.vision)
@@ -394,12 +393,12 @@ class Vision:
 
 
     def printObjects(self):
-        print "========Object Print========"
+        print("========Object Print========")
         for i in range(len(self.objects)):
-            print "Object " + str(i) + ":"
-            print "\tName: " + self.objects[i].name
-            print "\tCoordinates: (" + str(self.objects[i].x) + "," + str(self.objects[i].y) + ")"
-            print "\tMoving: " + str(self.objects[i].moving)
+            print("Object " + str(i) + ":")
+            print("\tName: " + self.objects[i].name)
+            print("\tCoordinates: (" + str(self.objects[i].x) + "," + str(self.objects[i].y) + ")")
+            print("\tMoving: " + str(self.objects[i].moving))
 
 
     def locateObj(self, object, x0, y0):
@@ -442,7 +441,7 @@ class Agent:
             #responses = [c for c in responses if c != ""]
             responses = responses[0].split(',')[2:]
             responses = [c for c in responses if c != ""]
-            print responses
+            print(responses)
 
     def sendForce(self, x, y):
         s = toJson("addForce", "BMvec", 0.0, str(x), str(y), "", 0, "", 0)
@@ -478,7 +477,7 @@ class Agent:
             # containing the current rotation
             for i in msg:
                 if i != "":
-                    print i
+                    print(i)
                     json_data = json.loads(i)
                     if "type" in json_data:
                         if json_data["type"] == "A":
@@ -490,7 +489,7 @@ class Agent:
             if not waitForData:
                 break
 
-        print "Error: No rotation message received from unity."
+        print("Error: No rotation message received from unity.")
         return None
 
 
@@ -581,7 +580,7 @@ class Agent:
         elif leftOrRight == "L":
             pass
         else:
-            print "ERROR: invalid argument in Agent.bringHandClose. Expected 'L' or 'R', instead found", leftOrRight
+            print("ERROR: invalid argument in Agent.bringHandClose. Expected 'L' or 'R', instead found", leftOrRight)
 
     # returns a tuple of x, y velocities
     def getVelocity(self):
@@ -597,7 +596,7 @@ class Agent:
             msg = getMessages(self.clientsocket)
             for i in msg:
                 if i != "":
-                    print i
+                    print(i)
                     json_data = json.loads(i)
                     if "type" in json_data:
                         if json_data["type"] == "S":
@@ -607,7 +606,7 @@ class Agent:
             if not waitForData:
                 break
 
-        print "Error: No velocity data retrieved from PAGI World"
+        print("Error: No velocity data retrieved from PAGI World")
         return None
 
     def addForceToItem(self,itemName,xForce,yForce):
@@ -639,7 +638,7 @@ class Agent:
             r = getMessages(self.clientsocket)
             for msg in r:
                 if msg != "":
-                    print msg
+                    print(msg)
                     json_data = json.loads(msg)
                     if "name" in json_data:
                         return msg
@@ -661,14 +660,14 @@ class Agent:
             r = getMessages(self.clientsocket)
             for msg in r:
                 if msg != "":
-                    print msg
+                    print(msg)
                     json_data = json.loads(msg)
                     if "type" in json_data:
                         if json_data["type"] == "activeReflexes":
                             return msg
             if not waitForData:
                 break
-        print "Error: Could not retrieve reflexes from PAGI world"
+        print("Error: Could not retrieve reflexes from PAGI world")
         return None
 
     """ This removes an active reflex from the PAGI world environment """
@@ -696,14 +695,14 @@ class Agent:
             r = getMessages(self.clientsocket)
             for msg in r:
                 if msg != "":
-                    print msg
+                    print(msg)
                     json_data = json.loads(msg)
                     if "type" in json_data:
                         if json_data["type"] == "activeStates":
                             return msg
             if not waitForData:
                 break
-        print "Error: Could not retrieve states from PAGI world"
+        print("Error: Could not retrieve states from PAGI world")
         return None
 
     """ This sets a state in PAGI world called 'name' for 'duration' number of seconds
@@ -749,13 +748,13 @@ class Agent:
         or returns None if the data could not be retrieved """
     def getTactileSensor(self,code):
         if code[0] != "B" and code[0]!= "R" and code[0] != "L":
-            print "Error: invalid tactile sensor code specified"
+            print("Error: invalid tactile sensor code specified")
             return None
         elif code[0] == "B" and (int(code[1]) > 7 or int(code[1]) < 0 ):
-            print "Error: invalid range for body tactile sensor (should be 0-7)"
+            print("Error: invalid range for body tactile sensor (should be 0-7)")
             return None
         elif code[0] != "B" and (int(code[1]) < 0 or int(code[1]) > 4):
-            print "Error: invalid range for hand tactile sensor (should be 0-4"
+            print("Error: invalid range for hand tactile sensor (should be 0-4")
             return None
         s = toJson("sensorRequest",code,0.0,0.0,0.0,[],0,[],0)
         send(s,self.clientsocket)
@@ -767,14 +766,14 @@ class Agent:
             r = getMessages(self.clientsocket)
             for msg in r:
                 if msg != "":
-                    print msg
+                    print(msg)
                     json_data = json.loads(msg)
                     if "sensorCode" in json_data:
                         if json_data["sensorCode"] == code:
                             return msg
             if not waitForData:
                 break
-            print "Error: Could not retrieve states from PAGI world"
+            print("Error: Could not retrieve states from PAGI world")
             return None
 
     """ returns a tuple containing the x and y values of the PAGI guy's position
@@ -790,7 +789,7 @@ class Agent:
             msg = getMessages(self.clientsocket)
             for i in msg:
                 if i != "":
-                    print i
+                    print(i)
                     json_msg = json.loads(i)
                     if "type" in json_msg:
                         if json_msg["type"] == "BP":
@@ -799,7 +798,7 @@ class Agent:
                             return x, y
             if not waitForData:
                 break
-        print "Error: could not retrieve body position data"
+        print("Error: could not retrieve body position data")
         return None
 
     """ This simple function returns the position of the PAGI guy's hand relative to his body 
@@ -820,7 +819,7 @@ class Agent:
             msg = getMessages(self.clientsocket)
             for i in msg:
                 if i != "":
-                    print i
+                    print(i)
                     json_msg = json.loads(i)
                     if "type" in json_msg:
                         if json_msg["type"] == code:
@@ -829,7 +828,7 @@ class Agent:
                             return x, y
             if not waitForData:
                 break
-        print "Error: could not retrieve hand position data"
+        print("Error: could not retrieve hand position data")
         return None
 
 
@@ -840,13 +839,13 @@ class Agent:
         this returns a json string containing all data returned by the sensor """
     def getVisionSensor(self,code,x,y):
         if code != 'V' and code != 'P':
-            print "Error: invalid vision sensor code specified, must be 'V' or 'P'"
+            print("Error: invalid vision sensor code specified, must be 'V' or 'P'")
             return None
         elif code == 'V' and (x > 30 or x < 0 or y < 0 or y > 20):
-            print "Error: invalid vision sensor code range."
+            print("Error: invalid vision sensor code range.")
             return None
         elif code == 'P' and (x > 15 or x < 0 or y > 10 or y < 0) :
-            print "Error: invalid vision sensor code range."
+            print("Error: invalid vision sensor code range.")
             return None
 
         code = code + str(x) + '.' + str(y)
@@ -860,7 +859,7 @@ class Agent:
             msg = getMessages(self.clientsocket)
             for i in msg:
                 if i != "":
-                    print i
+                    print(i)
                     json_msg = json.loads(i)
                     if "sensorCode" in json_msg:
                         if json_msg["sensorCode"] == code:
@@ -868,7 +867,7 @@ class Agent:
             if not waitForData:
                 break
 
-        print "Error: no sensor data could be retrieved from sensor " + code
+        print("Error: no sensor data could be retrieved from sensor " + code)
         return None
 
     """ this returns a json string containing all sensor map data retrieved from unity 
@@ -880,7 +879,7 @@ class Agent:
         elif code == "MPN":
             s = toJson("sensorRequest","MPN",0.0,0.0,0.0,[],0,[],0)
         else:
-            print "Error: Invalid map sensor code."
+            print("Error: Invalid map sensor code.")
             return None
 
         send(s, self.clientsocket)
@@ -892,7 +891,7 @@ class Agent:
             msg = getMessages(self.clientsocket)
             for i in msg:
                 if i != "":
-                    print i
+                    print(i)
                     json_msg = json.loads(i)
                     if "type" in json_msg:
                         if json_msg["type"] == code:
@@ -900,7 +899,7 @@ class Agent:
             if not waitForData:
                 break
 
-        print "Error: No sensor map data retreived"
+        print("Error: No sensor map data retreived")
         return None
 
     """This allows for a force to be sent to an effector using an expression instead of a single value
