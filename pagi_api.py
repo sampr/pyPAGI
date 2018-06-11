@@ -62,7 +62,7 @@ def send(msg, clientsocket):
 	waits for socket to respond before exiting
 	'''
     # send message
-    clientsocket.send(msg)  # , clientsocket)
+    clientsocket.send(msg.encode("UTF-8"))  # , clientsocket)
 
 
 # messageType = msg.split('\n')[0].split(',')[1]
@@ -93,7 +93,7 @@ def getMessages(socket):
     readable = select.select([socket], [], [], 0.25)  #timeout/1000)
     if readable[0]:
         # read message and add to messages
-        responses = socket.recv(8192).split('\n')  # limit of 8192 characters
+        responses = socket.recv(8192).decode("UTF-8").split('\n')  # limit of 8192 characters
         return responses
     return []
 
