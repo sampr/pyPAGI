@@ -249,7 +249,7 @@ class Hand:
         '''
 		stop appliying grabbing force and update holding status
 		'''
-        s = toJson("addForce", self.hand + 'HG,', 0.0, 5.0, 0.0, "", 0, "", 0)
+        s = toJson("addForce", self.hand + 'HR', 0.0, 5.0, 0.0, "", 0, "", 0)
         send(s, self.clientsocket)
         self.closed = False
         self.holdingObj = False
