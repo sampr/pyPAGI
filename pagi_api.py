@@ -412,7 +412,7 @@ class Vision:
                     ySum += y
                     numCoords += 1
         if numCoords == 0:
-            return null
+            return None
 
         xCoord = xSum / numCoords
         yCoord = ySum / numCoords
