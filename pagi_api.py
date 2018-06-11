@@ -229,7 +229,7 @@ class Hand:
         s = toJson("addForce", self.hand + 'HG', 0.0, 5.0, 0.0, "", 0, "", 0)
         send(s, self.clientsocket)
         response = getMessages(self.clientsocket) # grab the update
-        json_data = json.load(response)
+        json_data = json.loads(response[0])
         number = json_data["content"].split(',')[1]
         if number == "1" :
             self.closed = True
@@ -238,7 +238,7 @@ class Hand:
         s = toJson("sensorRequest", self.hand + '2', 0.0, 0.0, 0.0, "", 0, "", 0)
         send(s, self.clientsocket)
         response = getMessages(self.clientsocket)
-        json_data = json.load(response)[0]
+        json_data = json.loads(response[0])
         number = json_data["p"]
 
         if number == "1":
