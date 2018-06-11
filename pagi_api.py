@@ -437,11 +437,14 @@ class Agent:
         readable = select.select([self.clientsocket], [], [], 0.25)  #timeout/1000)
         if readable[0]:
             # read message and add to messages
-            responses = self.clientsocket.recv(8192).split('\n')  # limit of 8192 characters
+            received = self.clientsocket.recv(8192)
+            responses = received.decode("UTF-8").split('\n')  # limit of 8192 characters
+            obj = json.loads(received)
             #responses = [c for c in responses if c != ""]
             responses = responses[0].split(',')[2:]
             responses = [c for c in responses if c != ""]
             print(responses)
+            return obj
 
     def sendForce(self, x, y):
         s = toJson("addForce", "BMvec", 0.0, str(x), str(y), "", 0, "", 0)
