@@ -23,7 +23,7 @@ while True:
 	responses = getMessages(cs)
 	for r in responses:
 		if r != "":
-			print "Message received: " + r
+			print("Message received: " + r)
 			#Do anything you want with the message here...
 			
 	#Do whatever you want: send messages, etc.
@@ -32,7 +32,7 @@ while True:
 		#agent.findObject("apple")
 		agent.jump()
 	else:
-		print "not"
+		print("not")
 	
 closeClient(cs)
 
