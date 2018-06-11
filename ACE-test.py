@@ -25,7 +25,7 @@ def checkMSG():
     responses = getMessages(cs)
     for r in responses:
         if r != "":
-            print "Message received: " + r
+            print("Message received: " + r)
 
 # sleep duration is the amount of time to pause when polling sensors or otherwise waiting
 # it is measured in seconds
