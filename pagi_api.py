@@ -101,7 +101,7 @@ def getMessages(socket):
     MessageType, stringContent are strings
     floatContent, vecX, and vecY and floats
     otherstrings is a list of strings (separated by commas)
-    messages is a list of commands that contain other messges/commands (separated by commas) 
+    messages is a list of commands that contain other messages/commands (separated by commas) 
         NOTE that each command in the list should start with '{' and end with '}' 
         No additional quotes should be inserted at the beginning or end of the object/string 
     See the PAGI-World documentation for more info on formatting messages/commands to PAGI """
@@ -736,7 +736,7 @@ class Agent:
         s = toJson("say",text,duration,xpos,ypos,[speaker],1,[],0)
         send(s,self.clientsocket)
 
-    """ This fuction sends a force to the PAGI guys hand. 
+    """ This function sends a force to the PAGI guys hand. 
         It takes parameters: hand as 'left' or 'right' and x as force in the horizontal direction
         and y as force in the vertical direction """
     def moveHand(self,hand,x,y):
@@ -873,7 +873,7 @@ class Agent:
         print("Error: no sensor data could be retrieved from sensor " + code)
         return None
 
-    """ this returns a json string containing all sensor map data retrieved from unity 
+    """ This returns a json string containing all sensor map data retrieved from unity 
         Note that this function would perform better if waitForData is set to false, and
         a custom function for receiving messages takes care of the data when it arrives. """
     def getSensorMap(self,code):
@@ -902,7 +902,7 @@ class Agent:
             if not waitForData:
                 break
 
-        print("Error: No sensor map data retreived")
+        print("Error: No sensor map data retrieved")
         return None
 
     """This allows for a force to be sent to an effector using an expression instead of a single value
