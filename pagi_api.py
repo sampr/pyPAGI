@@ -1,14 +1,14 @@
 """ This is the main api for use with PAGI-World
-    It contains many prewritten classes and functions that can help serve 
+    It contains many prewritten classes and functions that can help serve
     as a starting point for the creation of agents to use in PAGI-World or
-    for getting an understanding of the PAGI-World environment. 
-    
-    The ACE-Test.py python script will run through all available commands, and 
-    is a good place to look to see examples of the API in action. 
+    for getting an understanding of the PAGI-World environment.
+
+    The ACE-Test.py python script will run through all available commands, and
+    is a good place to look to see examples of the API in action.
     (Note you will have to change the IP address at the top of the file to the
     appropriate number, and have the PAGI-World server running at a reachable address.
 
-    The template.py serves as a barebones template for setting up an agent to 
+    The template.py serves as a barebones template for setting up an agent to
     interact in the PAGI-World environment.
 
     Last Updated - 3/20/2018 by Austin Erickson
@@ -66,7 +66,7 @@ def send(msg, clientsocket):
 
 
 # messageType = msg.split('\n')[0].split(',')[1]
-# 
+#
 # 	global unread
 # 	while True:
 # 		# update unread with responses from socket
@@ -77,7 +77,7 @@ def send(msg, clientsocket):
 # 			for response in responses:
 # 				if response != "":
 # 					unread.append(response)
-# 
+#
 # 		# search unread messages for match with current call; remove and return if found
 # 		for message in unread:
 # 			responseType = message.split(',')[0]
@@ -125,7 +125,7 @@ def toJson(messageType,stringContent,floatContent,vecX,vecY,otherStrings,lenOthe
 class Body:
     '''
 	UNIMPLEMENTED
-	holds body sensors 
+	holds body sensors
 	'''
 
     def __init__(self, socket):
@@ -503,7 +503,7 @@ class Agent:
 		rotates agent to specified angle							  0
 		takes degrees or radians								90  Agent  270
 		absolute == True: 0 is to top of screen						 180
-		absolute == False: 0 is where agent is currently facing 
+		absolute == False: 0 is where agent is currently facing
 		'''
         #Error checking, setting defaults to degrees and absolute direction
         if not isinstance(degrees, bool): degrees = True
@@ -616,6 +616,7 @@ class Agent:
         s = toJson("addForceToItem",itemName,0.0,xForce,yForce,[],0,[],0)
         send(s,self.clientsocket)
 
+    # this creates a custom item in the pagi env
     def createItem(self,filePath,mass,xpos,ypos,name,ph,r,e,k):
         str1 = [ (name + "," + str(ph) + "," + str(r) + "," + str(e) + "," + str(k)) ]
         s = toJson("createItem",filePath,mass,xpos,ypos,str1,1,[],0)
@@ -721,15 +722,19 @@ class Agent:
         s = toJson("loadTask",name,0.0,0.0,0.0,[],0,[],0)
         send(s,self.clientsocket)
 
+    #def saveTask(self,name):
+    #    s = toJson("saveTask",name,0.0,0.0,0.0,[],0,[],0)
+    #    send(s,self.clientsocket)
+
     """ This function prints text to the console of PAGI World """
     def printToConsole(self,text):
         s = toJson("print",text,0.0,0.0,0.0,[],0,[],0)
         send(s,self.clientsocket)
 
-    """ This function makes a speech bubble in the PAGI world 
+    """ This function makes a speech bubble in the PAGI world
         The text to be said is contained in parameter text, where duration is the
-        number of seconds for the message to be displayed, xpos/ypos are the coordinates 
-        of where to display the bubble, and speaker contains a character 'P' if the PAGI 
+        number of seconds for the message to be displayed, xpos/ypos are the coordinates
+        of where to display the bubble, and speaker contains a character 'P' if the PAGI
         guy is saying the message, or 'N' if it is a general message said by no one. """
     def say(self,text,duration,xpos,ypos,speaker):
         # speaker is 'P' for pagi guy, or 'N' for no one
@@ -804,7 +809,7 @@ class Agent:
         print("Error: could not retrieve body position data")
         return None
 
-    """ This simple function returns the position of the PAGI guy's hand relative to his body 
+    """ This simple function returns the position of the PAGI guy's hand relative to his body
         it returns a tuple containing the x,y values on success or None if no data was retrieved"""
     def getHandPosition(self,hand):
         if hand.upper() == "RIGHT":
@@ -835,8 +840,8 @@ class Agent:
         return None
 
 
-    """ This gets data from a vision sensor 
-        parameter code contains 'P' for peripheral sensor or 'D' for detailed sensor 
+    """ This gets data from a vision sensor
+        parameter code contains 'P' for peripheral sensor or 'D' for detailed sensor
         x and y are the coordinates of the sensor in the sensor map (0,0 to 30,20 for Detailed
         and 0,0 to 15,10 for peripheral vision)
         this returns a json string containing all data returned by the sensor """
